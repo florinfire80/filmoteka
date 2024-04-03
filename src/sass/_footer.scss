@@ -1,0 +1,39 @@
+.footer {
+  min-width: 100%;
+  background: #f7f7f7;
+  flex-shrink: 0;
+}
+
+.footer-copyright {
+  display: flex;
+  justify-content: center;
+  padding-left: 48px;
+  padding-right: 36px;
+  flex-wrap: wrap;
+  align-items: center;
+  padding-top: 30px;
+  padding-bottom: 28px;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.172;
+  color: #545454;
+}
+
+.love {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.footer_3 {
+  border-bottom: 1px solid;
+  cursor: pointer;
+}
+
+@media screen and (min-width: 768px) {
+  .footer-copyright {
+    font-size: 16px;
+    line-height: 1.187;
+  }
+}
