@@ -1,6 +1,5 @@
-import genresData from '../../genres.json';
 import { refs } from '../refs';
-const genres = genresData.genres;
+import { genres } from '../../genres.json';
 
 async function renderMoviesDetailed(data) {
   if (!data) {
@@ -11,41 +10,41 @@ async function renderMoviesDetailed(data) {
       const imageSrc = movie.poster_path
         ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
         : '';
-      const genres = genersForFilmCard(makeGenresArray(movie));
+      const movieGenres = makeGenresArray(movie);
+      const genresString = genresForFilmCard(movieGenres);
 
       const year = movie.release_date
         ? movie.release_date.split('-')[0]
         : 'n/a';
       return `
-  <li  class='gallery__item' data-id="${movie.id}">
-      <img class='gallery__item-image' alt="${movie.title}" src="${imageSrc}">
-    <div class='gallery__item-description'>
-    <h3 class='gallery__item-description-title' >${movie.title}</h3>
-    <p class='gallery__item-description-genres' >${genres} | ${year}</p></div>
-  </li>
-`;
+        <li  class='gallery__item' data-id="${movie.id}">
+          <img class='gallery__item-image' alt="${movie.title}" src="${imageSrc}">
+          <div class='gallery__item-description'>
+            <h3 class='gallery__item-description-title' >${movie.title}</h3>
+            <p class='gallery__item-description-genres' >${genresString} | ${year}</p>
+          </div>
+        </li>
+      `;
     })
     .join('');
 }
 
-// genersForFilmCard
+// Array for the function genresForFilmCard
 function makeGenresArray(movie) {
-  let genresIdsArray = [];
-  movie.genres.forEach(genre => {
-    genresIdsArray.push(genre.id);
-  });
-  return genresIdsArray;
-}
-// renderMoviesDetailed
-function genersForFilmCard(genreIds) {
-  const arrayOfGenres = genreIds.map(id => {
-    return genres.find(genre => genre.id === id).name;
-  });
-  const result =
-    arrayOfGenres.length > 2
-      ? arrayOfGenres.splice(0, 2).concat('Other').join(', ')
-      : arrayOfGenres.join(', ');
-  return result;
+  return movie.genres.map(genre => genre.id);
 }
 
-export { makeGenresArray, genersForFilmCard, renderMoviesDetailed };
+// Processing genre IDs and displaying their names for renderMoviesDetailed
+function genresForFilmCard(genreIds) {
+  const selectedGenres = genreIds
+    .map(id => genres.find(genre => genre.id === id).name)
+    .slice(0, 2); // Select only the first two genres
+
+  if (selectedGenres.length < genreIds.length) {
+    selectedGenres.push('Other');
+  }
+
+  return selectedGenres.join(', ');
+}
+
+export { makeGenresArray, genresForFilmCard, renderMoviesDetailed };

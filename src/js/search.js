@@ -27,12 +27,14 @@ refs.searchInput.addEventListener(
 async function onSearchMovie() {
   const query = refs.searchInput.value.trim();
 
+  if (query === '') {
+    onHomeBtn();
+    return;
+  }
+
   try {
-    if (query === '') {
-      onHomeBtn();
-      return;
-    }
     const movies = await movieApi.searchMovies(query);
+
     if (movies.length === 0) {
       Notify.failure(
         'Sorry, no results found. Please try again with a different movie name.'
@@ -40,11 +42,13 @@ async function onSearchMovie() {
       refs.searchInput.value = '';
       return;
     }
+
     renderMovies(movies);
   } catch (error) {
     console.error(error);
   }
 }
+
 refs.team.addEventListener('click', () => {
   Notify.success('There will be a modal here soon');
 });

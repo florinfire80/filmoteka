@@ -6,7 +6,8 @@ import {
 import { renderMoviesDetailed } from './fnRenderMoviesDetailed';
 
 refs.libraryBtn.addEventListener('click', onMyLibraryClick);
-// Local Storage / My Library
+
+// Render all filtered movies from LocalStorage when clicking on My Library
 function onMyLibraryClick() {
   renderMoviesDetailed(getAllMoviesFromLocalStorage());
 }
@@ -15,32 +16,25 @@ function renderMoviesByPageNumber(pageNumber) {
   const movies = getAllMoviesFromLocalStorage();
 
   const startIndex = (pageNumber - 1) * 20;
-  let endIndex = startIndex + 20;
-  endIndex = Math.min(endIndex, movies.length);
-
-  const moviesToRender = movies.slice(startIndex, endIndex);
+  const moviesToRender = movies.slice(startIndex, startIndex + 20);
 
   renderMoviesDetailed(moviesToRender);
 }
+
 function renderWatchedMoviesByPageNumber(pageNumber) {
   const movies = getFromLocalStorage('watched');
 
   const startIndex = (pageNumber - 1) * 20;
-  let endIndex = startIndex + 20;
-  endIndex = Math.min(endIndex, movies.length);
-
-  const moviesToRender = movies.slice(startIndex, endIndex);
+  const moviesToRender = movies.slice(startIndex, startIndex + 20);
 
   renderMoviesDetailed(moviesToRender);
 }
+
 function renderQueueMoviesByPageNumber(pageNumber) {
   const movies = getFromLocalStorage('queue');
 
   const startIndex = (pageNumber - 1) * 20;
-  let endIndex = startIndex + 20;
-  endIndex = Math.min(endIndex, movies.length);
-
-  const moviesToRender = movies.slice(startIndex, endIndex);
+  const moviesToRender = movies.slice(startIndex, startIndex + 20);
 
   renderMoviesDetailed(moviesToRender);
 }

@@ -5,77 +5,43 @@ import { showLoader, hideLoader } from './loader';
 export default class MovieApi {
   constructor() {
     this.page = 1;
-    this.genreId = '';
-    this.genre = '';
     this.searchQuery = '';
   }
 
+  async fetchData(url) {
+    try {
+      showLoader(); // Show loader before making the request
+      const response = await axios.get(url);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      throw error; // Rethrow the error for handling by the caller
+    } finally {
+      hideLoader(); // Hide loader regardless of success or failure
+    }
+  }
+
   async getTrendingMovies() {
-    showLoader();
     const url = `${BASE_URL}/trending/movie/day?api_key=${API_KEY}&page=${this.page}`;
-    const response = await axios.get(url);
-    hideLoader();
-    return response.data.results;
-  }
-  async getData() {
-    showLoader();
-    const url = `${BASE_URL}/trending/movie/day?api_key=${API_KEY}&page=${this.page}`;
-    const response = await axios.get(url);
-    hideLoader();
-    return response.data;
-  }
-  async getMoviesForPagination(page) {
-    showLoader();
-    const url = `${BASE_URL}/trending/movie/day?api_key=${API_KEY}&page=${page}`;
-    const response = await axios.get(url);
-    hideLoader();
-    return response.data.results;
+    return this.fetchData(url).then(data => data.results);
   }
 
-  async getTrendingMoviesForPagination(page) {
-    showLoader();
-    const url = `${BASE_URL}/trending/movie/day?api_key=${API_KEY}&page=${page}`;
-    const response = await axios.get(url);
-    hideLoader();
-    return response.data.results;
-  }
-
-  async searchMovies(query) {
-    showLoader();
-    const url = `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${query}`;
-    const response = await axios.get(url);
-    hideLoader();
-    return response.data.results;
-  }
-
-  async getSearchMoviesForPagination(query, page) {
-    showLoader();
+  async searchMovies(query, page = 1) {
     const url = `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${query}&page=${page}`;
-    const response = await axios.get(url);
-    hideLoader();
-    return response.data.results;
+    return this.fetchData(url).then(data => data.results);
   }
 
   async getMovieDetails(movieId) {
-    showLoader();
     const url = `${BASE_URL}/movie/${movieId}?api_key=${API_KEY}`;
-    const response = await axios.get(url);
-    hideLoader();
-    return response.data;
+    return this.fetchData(url);
   }
 
   async getGenres() {
-    showLoader();
     const url = `${BASE_URL}/genre/movie/list?api_key=${API_KEY}`;
-    const response = await axios.get(url);
-    hideLoader();
-    return response.data.genres;
-  }
-  get query() {
-    return this.searchQuery;
+    return this.fetchData(url).then(data => data.genres);
   }
 
-  set query(newQuery) {
+  setQuery(newQuery) {
     this.searchQuery = newQuery;
   }
 

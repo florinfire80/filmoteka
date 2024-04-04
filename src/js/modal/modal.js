@@ -6,29 +6,31 @@ import {
   closeModalOnEsc,
   closeModalOnBtnClick,
 } from './modal-close-functions';
-import { onModalBtnClick } from './modal-btns-functions';
-import { toggleModalBtnsDisplay } from './modal-btns-functions';
+import {
+  onModalBtnClick,
+  toggleModalBtnsDisplay,
+} from './modal-btns-functions';
 
 const api = new MovieApi();
-refs.gallery.addEventListener('click', onGalleryCardClick);
 
-async function onGalleryCardClick(e) {
-  let targetId = e.target.closest('li').attributes[1].value;
-  api.getMovieDetails(targetId).then(movie => {
-    refs.modalContent.innerHTML = modalCard(movie);
-    refs.modal.style.display = 'block';
-    document.body.style.overflow = 'hidden';
+refs.gallery.addEventListener('click', async e => {
+  const targetLi = e.target.closest('li');
+  if (!targetLi) return;
 
-    const addToWatchedBtn = refs.modalContent.querySelector('.addWatched');
-    const addToQueueBtn = refs.modalContent.querySelector('.addQueue');
+  const targetId = targetLi.dataset.id;
+  const movie = await api.getMovieDetails(targetId);
 
-    toggleModalBtnsDisplay(targetId, addToWatchedBtn, addToQueueBtn);
+  refs.modalContent.innerHTML = modalCard(movie);
+  refs.modal.style.display = 'block';
+  document.body.style.overflow = 'hidden';
 
-    refs.modalContent.addEventListener('click', function (e) {
-      onModalBtnClick(e, movie);
-    });
-  });
-}
+  const addToWatchedBtn = refs.modalContent.querySelector('.addWatched');
+  const addToQueueBtn = refs.modalContent.querySelector('.addQueue');
+
+  toggleModalBtnsDisplay(targetId, addToWatchedBtn, addToQueueBtn);
+
+  refs.modalContent.addEventListener('click', e => onModalBtnClick(e, movie));
+});
 
 refs.closeBtn.addEventListener('click', closeModalOnBtnClick);
 window.addEventListener('click', closeModalOnBgClick);

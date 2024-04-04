@@ -1,11 +1,13 @@
 import {
-  genersForFilmCard,
+  genresForFilmCard,
   makeGenresArray,
 } from '../library/fnRenderMoviesDetailed';
 
-// genersForFilmCard makeGenresArray
+// Modal template, accepts a movie object.
+// To get genres uses genresForFilmCard and makeGenresArray
 export function modalCard(movie) {
-  const genres = genersForFilmCard(makeGenresArray(movie));
+  const genres = genresForFilmCard(makeGenresArray(movie));
+
   return `<div
   class="modal__image-container"
   data-year="${movie.release_date}"
@@ -34,7 +36,7 @@ export function modalCard(movie) {
       </tr>
       <tr class="description__line">
         <th class="description__head">Original title</th>
-        <td class="description__head-titel">${movie.original_title}</td>
+        <td class="description__head-title">${movie.original_title}</td>
       </tr>
       <tr class="description__line">
         <th class="description__head">Genre</th>

@@ -1,4 +1,5 @@
 import { Notify } from 'notiflix';
+
 function addToLocalStorage(tag, movieData, key) {
   let movies = JSON.parse(localStorage.getItem(tag)) || [];
 
@@ -12,10 +13,12 @@ function addToLocalStorage(tag, movieData, key) {
     addToQueue(movies, movieData, tag);
   }
 }
+
 function getFromLocalStorage(tag) {
   let storedMovies = JSON.parse(localStorage.getItem(tag)) || [];
   return storedMovies;
 }
+
 function getAllMoviesFromLocalStorage() {
   const watchedMovies = getFromLocalStorage('watched');
   const queueMovies = getFromLocalStorage('queue');
@@ -25,6 +28,7 @@ function getAllMoviesFromLocalStorage() {
   );
   return uniqueMovies;
 }
+
 function addToWatched(movies, movieData, tag) {
   const queueMovies = JSON.parse(localStorage.getItem('queue')) || [];
   const movieIndex = movies.findIndex(movie => movie.id === movieData.id);
@@ -34,11 +38,12 @@ function addToWatched(movies, movieData, tag) {
   if (movieIndex === -1 && queueMovieIndex === -1) {
     movies.push(movieData);
     localStorage.setItem(tag, JSON.stringify(movies));
-    Notify.success('Movie is sucessfully added to Watched');
+    Notify.success('Movie is successfully added to Watched');
   } else {
     // Notify.failure('Movie is already added');
   }
 }
+
 function addToQueue(movies, movieData, tag) {
   const watchedMovies = JSON.parse(localStorage.getItem('watched')) || [];
   const movieIndex = movies.findIndex(movie => movie.id === movieData.id);
@@ -48,11 +53,12 @@ function addToQueue(movies, movieData, tag) {
   if (movieIndex === -1 && watchedMovieIndex === -1) {
     movies.push(movieData);
     localStorage.setItem(tag, JSON.stringify(movies));
-    Notify.success('Movie is sucessfully added to Queue');
+    Notify.success('Movie is successfully added to Queue');
   } else {
     // Notify.failure('Movie is already added');
   }
 }
+
 function checkMovieLocationById(id) {
   const watchedMovies = JSON.parse(localStorage.getItem('watched')) || [];
   const queueMovies = JSON.parse(localStorage.getItem('queue')) || [];
